@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Test from './test';
 import { DefaultLayout } from './layout';
 import AccountSettingLayout from './layout/AccountSettingLayout';
+import MyTable from './pages/JobManagement/Table';
 
 export const route = createBrowserRouter([
     {
@@ -18,6 +19,15 @@ export const route = createBrowserRouter([
                 id: 'services',
                 path: 'services',
                 element: <div>Services</div>,
+            },
+            {
+                id: 'job-management',
+                path: 'jobs',
+                element: (
+                    <div className="h-full w-full">
+                        <MyTable />
+                    </div>
+                ),
             },
             {
                 id: 'account-setting',

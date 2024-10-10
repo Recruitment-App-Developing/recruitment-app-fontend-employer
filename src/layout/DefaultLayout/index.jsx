@@ -14,23 +14,24 @@ export default function DefaultLayout() {
         <div className="h-lvh w-full">
             <Header />
             <SideBar />
-            {/* <div className="flex h-[600px] w-full"> */}
-            {/* <div className="container flex-1 flex-col justify-center bg-secondary"> */}
             <div
                 className={cn(
-                    'relative h-full w-full overflow-y-auto overflow-x-hidden pt-16 transition-all',
+                    `relative h-full w-full overflow-y-auto overflow-x-hidden bg-slate-200 pt-16
+                    transition-all`,
                     isOpen ? 'md:pl-80' : 'md:pl-16',
                 )}
             >
                 {activeRoute && (
-                    <div className="bg-white py-5 pl-4">
+                    <div className="bg-white py-5 pl-4 shadow-sm">
                         {activeRoute.label}
                     </div>
                 )}
-                <Outlet />
+                <div className="flex h-full w-full items-center justify-center px-5 pb-20 pt-5">
+                    <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
+                        <Outlet />
+                    </div>
+                </div>
             </div>
-            {/* </div> */}
-            {/* </div> */}
         </div>
     );
 }
