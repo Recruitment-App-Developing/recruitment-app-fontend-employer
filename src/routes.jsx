@@ -1,8 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Test from './test';
-import { DefaultLayout } from './layout';
+import { DefaultLayout, StatisticLayout } from './layout';
 import AccountSettingLayout from './layout/AccountSettingLayout';
 import MyTable from './pages/JobManagement/Table';
+import JobDetailPage from './pages/JobManagement/JobDetail';
+import AppliedCandidateByJob from './pages/JobManagement/JobDetail/AppliedCandidateByJob';
 
 export const route = createBrowserRouter([
     {
@@ -23,11 +25,31 @@ export const route = createBrowserRouter([
             {
                 id: 'job-management',
                 path: 'jobs',
-                element: (
-                    <div className="h-full w-full">
-                        <MyTable />
-                    </div>
-                ),
+                children: [
+                    {
+                        id: 'job-list',
+                        index: true,
+                        element: (
+                            <StatisticLayout>
+                                <MyTable />
+                            </StatisticLayout>
+                        ),
+                    },
+                    {
+                        id: 'job-detail',
+                        path: 'job-detail',
+                        element: <JobDetailPage />,
+                        children: [
+                            { id: 'view-job-detail', path: ':jobId' },
+                            {
+                                id: 'applied-candidate',
+                                path: 'applied-candidate/:jobId',
+                                element: <AppliedCandidateByJob />,
+                            },
+                            { id: 'edit-job', path: 'edit-job/:jobId' },
+                        ],
+                    },
+                ],
             },
             {
                 id: 'account-setting',

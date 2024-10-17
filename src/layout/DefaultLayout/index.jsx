@@ -27,7 +27,7 @@ export default function DefaultLayout() {
                     </div>
                 )}
                 <div className="flex h-full w-full items-center justify-center px-5 pb-20 pt-5">
-                    <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
+                    <div className="flex h-full w-full items-center justify-center rounded-md">
                         <Outlet />
                     </div>
                 </div>
