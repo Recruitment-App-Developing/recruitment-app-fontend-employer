@@ -15,7 +15,7 @@ const routes = [
     },
 ];
 
-export default function SideBar({ jobId = 1 }) {
+export default function SideBar({ jobId }) {
     return (
         <ul className="flex h-10 w-full">
             {routes.map((item, index) => (

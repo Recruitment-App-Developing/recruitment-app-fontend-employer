@@ -1,5 +1,6 @@
 import {
     Checkbox,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -7,12 +8,22 @@ import {
     TableContainer,
     TablePagination,
     TableRow,
+    Tooltip,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import EnhancedTableHead from './EnhancedTableHead';
 import handleClickRow from './handleClickRow';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import { fetchListJobByCompany } from '../../../services/jobService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faEye,
+    faPenToSquare,
+    faTrash,
+    faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
 
 // const rowData = [
 //     {
@@ -58,6 +69,10 @@ import { fetchListJobByCompany } from '../../../services/jobService';
 // ];
 
 export default function MyTable() {
+    const className = 'text-xl';
+
+    const navigate = useNavigate();
+
     const [orderDir, setOrderDir] = useState('asc');
     const [orderBy, setOrderBy] = useState('name');
     const [selected, setSelected] = useState([]);
@@ -106,6 +121,20 @@ export default function MyTable() {
             ? Math.max(0, (1 + currentPage) * pageSize - rows.length)
             : 0;
 
+    const handleAppliedCandidateList = (jobId) => {
+        navigate(`/jobs/job-detail/applied-candidate/${jobId}`);
+    };
+
+    const handleDetailJob = (jobId) => {
+        navigate(`/jobs/job-detail/${jobId}`);
+    };
+
+    const handleEditJob = (jobId) => {
+        navigate(`/jobs/job-detail/edit-job/${jobId}`);
+    };
+
+    const handleHiddenJob = (jobId) => {};
+
     return (
         <div>
             <Paper sx={{ width: '100%' }}>
@@ -153,14 +182,118 @@ export default function MyTable() {
                                                 checked={isItemSelected}
                                             />
                                         </TableCell>
-                                        {columnData.map((item, index) => (
-                                            <TableCell
-                                                key={index}
-                                                align="justify"
-                                            >
-                                                {row[item]}
-                                            </TableCell>
-                                        ))}
+                                        <TableCell
+                                            key={index}
+                                            sx={{
+                                                maxWidth: '300px',
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis',
+                                            }}
+                                        >
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell
+                                            key={index}
+                                            sx={{
+                                                width: '190px',
+                                            }}
+                                        >
+                                            {row.postingTime}
+                                        </TableCell>
+                                        <TableCell
+                                            key={index}
+                                            sx={{
+                                                width: '100px',
+                                                textAlign: 'right',
+                                            }}
+                                        >
+                                            {row.numberOfView}
+                                        </TableCell>
+                                        <TableCell
+                                            key={index}
+                                            sx={{
+                                                width: '100px',
+                                                textAlign: 'right',
+                                            }}
+                                        >
+                                            {row.numberOfApplicated}
+                                        </TableCell>
+                                        <TableCell
+                                            key={index}
+                                            sx={{ maxWidth: '100px' }}
+                                        >
+                                            <div className="flex items-center justify-between pl-3">
+                                                <Tooltip title="Xem danh sách Ứng viên">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleAppliedCandidateList(
+                                                                row.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            className={clsx(
+                                                                className,
+                                                                'text-primary',
+                                                            )}
+                                                            icon={faUsers}
+                                                        />
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip title="Xem chi tiết Tin tuyển dụng">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDetailJob(
+                                                                row.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            className={clsx(
+                                                                className,
+                                                                'text-sky-400',
+                                                            )}
+                                                            icon={faEye}
+                                                        />
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip title="Chỉnh sửa tin tuyển dụng">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleEditJob(
+                                                                row.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            className={clsx(
+                                                                className,
+                                                                'text-yellow',
+                                                            )}
+                                                            icon={faPenToSquare}
+                                                        />
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip title="Ẩn tin tuyển dụng">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleHiddenJob(
+                                                                row.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            className={clsx(
+                                                                className,
+                                                                'text-rose-500',
+                                                            )}
+                                                            icon={faTrash}
+                                                        />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -197,7 +330,7 @@ const headCellList = [
     },
     {
         id: 'postingTime',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Ngày tạo',
         sort: true,
@@ -205,7 +338,7 @@ const headCellList = [
     {
         id: 'numberOfView',
         numeric: true,
-        disablePadding: false,
+        disablePadding: true,
         label: 'Số lượt xem',
         sort: true,
     },
@@ -217,17 +350,10 @@ const headCellList = [
         sort: true,
     },
     {
-        id: 'applyRating',
+        id: 'action',
         numeric: true,
         disablePadding: false,
-        label: 'Tỷ lệ ứng tuyển',
-        sort: false,
-    },
-    {
-        id: 'action',
-        numeric: false,
-        disablePadding: false,
-        label: 'Thao tác',
+        label: 'Hành Động',
         sort: false,
     },
 ];

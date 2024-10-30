@@ -46,7 +46,7 @@ export default function useSideBarRoutes() {
             },
             {
                 label: 'Tạo tin mới',
-                href: '/create-job',
+                href: '/jobs/job-add',
                 icon: faMarker,
                 active: pathname === '/create-job',
             },

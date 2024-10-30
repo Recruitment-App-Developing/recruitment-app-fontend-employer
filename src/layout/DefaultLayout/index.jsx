@@ -26,8 +26,8 @@ export default function DefaultLayout() {
                         {activeRoute.label}
                     </div>
                 )}
-                <div className="flex h-full w-full items-center justify-center px-5 pb-20 pt-5">
-                    <div className="flex h-full w-full items-center justify-center rounded-md">
+                <div className="flex h-fit w-full items-center justify-center overflow-y-auto rounded-2xl px-5">
+                    <div className="flex w-full justify-center rounded-md pt-3">
                         <Outlet />
                     </div>
                 </div>

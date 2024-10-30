@@ -2,6 +2,7 @@ import {
     faBriefcase,
     faCalendarDay,
     faEllipsis,
+    faFileLines,
     faGear,
     faGraduationCap,
     faInbox,
@@ -9,13 +10,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import cn from '../../../../utils/cn';
 import AdditionLine from './AdditionLine';
 import { fetchAppliedCandidateByJob } from '../../../../services/applicationService';
 import { toast } from 'react-toastify';
+import { Tooltip } from '@mui/material';
 
 export default function AppliedCandidateByJob() {
+    const navigate = useNavigate();
+
     const { jobId } = useParams();
     const [candidateList, setCandidateList] = useState([]);
 
@@ -105,7 +109,15 @@ export default function AppliedCandidateByJob() {
                             </span>
                         </td>
                         <td style={{ border: clasaBorder }}>
-                            <FontAwesomeIcon icon={faEllipsis} />
+                            <Tooltip title="Xem CV ứng tuyển">
+                                <a
+                                    href={item.cvLink}
+                                    className="text-2xl text-primary"
+                                    target="_blank"
+                                >
+                                    <FontAwesomeIcon icon={faFileLines} />
+                                </a>
+                            </Tooltip>
                         </td>
                     </tr>
                 ))}

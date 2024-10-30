@@ -2,6 +2,7 @@ import { RouterProvider } from 'react-router-dom';
 import './App.css';
 import { route } from './routes';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Fragment } from 'react';
 
 function App() {

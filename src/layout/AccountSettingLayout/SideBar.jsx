@@ -5,7 +5,7 @@ export default function SideBar() {
     const routes = useSideBar();
 
     return (
-        <ul className="flex flex-col">
+        <ul className="flex h-full flex-col">
             {routes.map((item, index) => (
                 <SideBarItem
                     key={index}
