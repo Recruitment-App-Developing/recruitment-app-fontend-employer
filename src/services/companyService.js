@@ -2,7 +2,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 export const fetchListCompanyForEmployer = async (pageSize = 6) => {
     const res = await axiosInstance.get(
-        `/company/employer?pageSize=${pageSize}`,
+        `/company/employer?pageSize=${pageSize}&sortDir=desc`,
     );
     return res.data;
 };

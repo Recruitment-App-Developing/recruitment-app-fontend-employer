@@ -6,6 +6,7 @@ import AddJobFirstForm from './AddJobFirstForm';
 import { formatDateTime } from '../../../utils/dateFormat';
 import { base64Converter } from '../../../utils/base64Converter';
 import { fetchAddJob } from '../../../services/jobService';
+import MultipleUploadImages from '../../../components/MultiImage/MutilpleUploadImages';
 
 export function AddAJob() {
     const [job, setJob] = useState({
@@ -58,24 +59,7 @@ export function AddAJob() {
         });
     };
 
-    const [src, setSrc] = useState();
-    const [srcList, setSrcList] = useState([]);
-
-    const handleUpload = (e) => {
-        console.log('Files: ', e.target.files);
-
-        const files = e.target.files;
-
-        const temp = Array.from(files).map(async (item) => {
-            return await base64Converter(item);
-        });
-        Promise.all(temp).then((base64Files) => {
-            setSrcList(base64Files);
-        });
-        // setSrcList(temp);
-    };
-
-    console.log('SrcList', srcList);
+    console.log(job);
 
     return (
         <div className="h-full w-full items-center">
@@ -88,7 +72,13 @@ export function AddAJob() {
                 <AddJobFirstForm job={job} setJob={setJob} />
             </AddressProvider>
             {/* <ImageItem src={src} onChange={setSrc} /> */}
-
+            <MultipleUploadImages
+                limit={5}
+                value={job.imageList}
+                onChange={(v) => {
+                    setJob({ ...job, imageList: v });
+                }}
+            />
             <button
                 onClick={handleSubmit}
                 className="rounded-md bg-primary px-4 py-2 font-medium text-white"

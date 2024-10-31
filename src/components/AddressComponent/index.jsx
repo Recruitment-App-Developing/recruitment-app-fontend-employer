@@ -7,6 +7,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import {
+    fetchListDistrictByProvince,
+    fetchListProvince,
+    fetchListWardByDistrict,
+} from '../../services/addressService';
+import { data } from 'autoprefixer';
 
 export default function AddressComponent({ handleChange }) {
     const [provinceList, setProvinceList] = useState();
@@ -18,39 +24,46 @@ export default function AddressComponent({ handleChange }) {
     const [detail, setDetail] = useState('');
 
     useEffect(() => {
-        const fetchProvince = async () => {
-            const res = await axios.get(
-                `https://open.oapi.vn/location/provinces`,
-            );
-            const data = await res.data;
-            setProvinceList(data.data);
-        };
-        fetchProvince();
+        fetchListProvince().then((data) => setProvinceList(data.data));
+        // const fetchProvince = async () => {
+        //     const res = await axios.get(
+        //         `https://open.oapi.vn/location/provinces`,
+        //     );
+        //     const data = await res.data;
+        //     setProvinceList(data.data);
+        // };
+        // fetchProvince();
     }, []);
 
     useEffect(() => {
         if (provinceSelected) {
-            const fetchDistrict = async () => {
-                const res = await axios.get(
-                    `https://open.oapi.vn/location/districts?provinceId=${provinceSelected}`,
-                );
-                const data = await res.data;
-                setDistrictList(data.data);
-            };
-            fetchDistrict();
+            fetchListDistrictByProvince(provinceSelected).then((data) =>
+                setDistrictList(data.data),
+            );
+            // const fetchDistrict = async () => {
+            //     const res = await axios.get(
+            //         `https://open.oapi.vn/location/districts?provinceId=${provinceSelected}`,
+            //     );
+            //     const data = await res.data;
+            //     setDistrictList(data.data);
+            // };
+            // fetchDistrict();
         }
     }, [provinceSelected]);
 
     useEffect(() => {
         if (districtSelected) {
-            const fetchWard = async () => {
-                const res = await axios.get(
-                    `https://open.oapi.vn/location/wards?districtId=${districtSelected}`,
-                );
-                const data = await res.data;
-                setWardList(data.data);
-            };
-            fetchWard();
+            fetchListWardByDistrict(districtSelected).then((data) =>
+                setWardList(data.data),
+            );
+            // const fetchWard = async () => {
+            //     const res = await axios.get(
+            //         `https://open.oapi.vn/location/wards?districtId=${districtSelected}`,
+            //     );
+            //     const data = await res.data;
+            //     setWardList(data.data);
+            // };
+            // fetchWard();
         }
     }, [districtSelected]);
 

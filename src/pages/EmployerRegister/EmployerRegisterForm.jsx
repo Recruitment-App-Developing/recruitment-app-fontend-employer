@@ -18,9 +18,11 @@ import { useState } from 'react';
 import { fetchRegisterEmployer } from '../../services/authService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 export default function EmployerRegisterForm() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [employer, setEmployer] = useState({
         username: '',
         password: '',
@@ -33,6 +35,7 @@ export default function EmployerRegisterForm() {
     const handleSubmit = () => {
         fetchRegisterEmployer(employer).then((data) => {
             toast.success(data.message);
+            login(data.data.token);
             navigate('/');
         });
     };
@@ -74,6 +77,7 @@ export default function EmployerRegisterForm() {
             />
             <TextField
                 label="Mật khẩu"
+                type="password"
                 fullWidth
                 onChange={(e) => handleChange('password', e.target.value)}
                 InputProps={{
@@ -87,6 +91,7 @@ export default function EmployerRegisterForm() {
             />
             <TextField
                 label="Nhập lại mật khẩu"
+                type="password"
                 fullWidth
                 onChange={(e) =>
                     handleChange('confirmPassword', e.target.value)

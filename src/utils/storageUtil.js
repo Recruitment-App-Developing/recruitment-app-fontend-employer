@@ -1,4 +1,4 @@
-const ACCESS_TOKEN = 'access_token';
+const ACCESS_TOKEN = 'TopCV_access_token';
 
 export const setToken = (token) => {
     localStorage.setItem(ACCESS_TOKEN, token);

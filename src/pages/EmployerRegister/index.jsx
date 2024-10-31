@@ -3,7 +3,7 @@ import EmployerRegisterForm from './EmployerRegisterForm';
 export default function EmployerRegister() {
     return (
         <section className="bg-gray-50 flex h-screen w-screen items-center justify-center pb-10 pt-10">
-            <div className="bg-gray-100 flex h-full w-3/4 flex-row gap-20 rounded-2xl p-5 shadow-lg">
+            <div className="bg-gray-100 flex h-fit w-3/4 flex-row gap-20 rounded-2xl p-5 shadow-lg">
                 <div className="w-[600px]">
                     <h2 className="mb-2 text-left text-xl font-semibold leading-7 text-primary">
                         Chào mừng bạn đã quay trở lại
@@ -33,8 +33,8 @@ export default function EmployerRegister() {
                     </div>
                 </div>
                 <div
-                    className="bg-auth-bg-image relative flex h-full w-full grow flex-row gap-0 rounded-2xl
-                        shadow-lg"
+                    className="relative flex h-[700px] w-full grow flex-row gap-0 rounded-2xl
+                        bg-[url('https://static.topcv.vn/v4/image/auth/auth_bg_desktop.png')] shadow-lg"
                 >
                     <div className="container justify-center">
                         <div className="container absolute left-9 top-[50%] w-3/5 translate-y-[-50%]">

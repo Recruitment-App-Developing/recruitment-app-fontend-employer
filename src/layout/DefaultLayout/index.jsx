@@ -1,14 +1,22 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import Header from './Header';
 import { DetailSideBar as SideBar } from './SideBar';
 import useSideBarRoutes from '../../hooks/useSideBarRoutes';
 import cn from '../../utils/cn';
 import useSider from '../../hooks/useSider';
+import useAuth from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 export default function DefaultLayout() {
     const routes = useSideBarRoutes();
+    const { isAuthenticated } = useAuth();
     const { isOpen } = useSider();
     const activeRoute = routes.find((item) => item.active);
+
+    if (!isAuthenticated) {
+        toast.error('Yêu cầu đăng nhập');
+        return <Navigate to={`/login`} />;
+    }
 
     return (
         <div className="h-lvh w-full">

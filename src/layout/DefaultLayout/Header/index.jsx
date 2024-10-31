@@ -15,6 +15,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { Avatar, Badge } from '@mui/material';
 import BasicPopover from '../../../components/Popover';
 import useSider from '../../../hooks/useSider';
+import useAuth from '../../../hooks/useAuth';
 
 export default function Header() {
     const { toggle } = useSider();
@@ -22,6 +23,8 @@ export default function Header() {
     const button =
         'w-fit flex items-center justify-center rounded-[30px] bg-[#3b546f] text-white text-sm px-4 py-1 font-medium gap-2 hover:opacity-80';
     const icon = 'bg-white rounded-[50%] text-[#3b546f] w-2 h-2 p-[3px]';
+
+    const { logout } = useAuth();
 
     return (
         <div>
@@ -83,7 +86,7 @@ export default function Header() {
                                     <FontAwesomeIcon
                                         icon={faArrowRightFromBracket}
                                     />
-                                    <span>Đăng xuất</span>
+                                    <button onClick={logout}>Đăng xuất</button>
                                 </li>
                             </ul>
                         }

@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
 function Login() {
@@ -16,7 +17,10 @@ function Login() {
                     <div className="container mt-3 flex w-[600px] items-center justify-center">
                         <p className="text-sm">
                             Bạn chưa có tài khoản?{' '}
-                            <a href="#" className="text-green-600">
+                            <a
+                                href={'/register'}
+                                className="font-medium text-primary"
+                            >
                                 Đăng kí ngay
                             </a>
                         </p>
@@ -41,8 +45,8 @@ function Login() {
                     </div>
                 </div>
                 <div
-                    className="bg-auth-bg-image relative flex h-full w-full grow flex-row gap-0 rounded-2xl
-                        shadow-lg"
+                    className="relative flex h-full w-full grow flex-row gap-0 rounded-2xl
+                        bg-[url('https://static.topcv.vn/v4/image/auth/auth_bg_desktop.png')] shadow-lg"
                 >
                     <div className="container justify-center">
                         <div className="container absolute left-9 top-[50%] w-3/5 translate-y-[-50%]">
@@ -63,7 +67,7 @@ function Login() {
                             </p>
                         </div>
                     </div>
-                    <div className="bg-auth-arrow w-2/5"></div>
+                    <div className="w-2/5 bg-[url('https://static.topcv.vn/v4/image/auth/auth_arrow.png')]"></div>
                 </div>
             </div>
         </section>

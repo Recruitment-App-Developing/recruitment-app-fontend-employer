@@ -5,19 +5,21 @@ import { useState } from 'react';
 import { fetchLogin } from '../../services/authService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const [login, setLogin] = useState({
+
+    const { login } = useAuth();
+    const [loginRequest, setLogin] = useState({
         username: '',
         password: '',
     });
 
-    console.log(login);
-
     const handleSubmit = () => {
-        fetchLogin(login).then((data) => {
+        fetchLogin(loginRequest).then((data) => {
             toast.success(data.message);
+            login(data.data.token);
             navigate('/');
         });
     };
@@ -29,7 +31,7 @@ export default function LoginForm() {
                 label="Tên đăng nhập"
                 fullWidth
                 onChange={(e) =>
-                    setLogin({ ...login, username: e.target.value })
+                    setLogin({ ...loginRequest, username: e.target.value })
                 }
                 InputProps={{
                     startAdornment: (
@@ -46,7 +48,7 @@ export default function LoginForm() {
                 fullWidth
                 type="password"
                 onChange={(e) =>
-                    setLogin({ ...login, password: e.target.value })
+                    setLogin({ ...loginRequest, password: e.target.value })
                 }
                 InputProps={{
                     startAdornment: (
