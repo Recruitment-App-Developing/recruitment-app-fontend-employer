@@ -31,6 +31,9 @@ import { experienceData } from '../../../constants/ExperienceData';
 import { moneyTypeData } from '../../../constants/MoneyTypeData';
 import { salaryTypeData } from '../../../constants/SalaryTypeData';
 import { MultiAutocomplete } from '../../../components/MultiSelect';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function AddJobFirstForm({ job, setJob }) {
     const classInput = '!text-base';
@@ -45,8 +48,6 @@ export default function AddJobFirstForm({ job, setJob }) {
             [key]: value,
         }));
     };
-
-    console.log(job);
 
     return (
         <div className="bg-none">
@@ -133,11 +134,6 @@ export default function AddJobFirstForm({ job, setJob }) {
                                             e.target.value,
                                         )
                                     }
-                                    slotProps={{
-                                        inputLabel: {
-                                            shrink: true,
-                                        },
-                                    }}
                                 />
                                 <FormControl fullWidth>
                                     <InputLabel id="work-method-label">
@@ -403,6 +399,16 @@ export default function AddJobFirstForm({ job, setJob }) {
                                 }
                             />
                         </div> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                                label="Hạn chót nhận CV"
+                                defaultValue={dayjs(new Date())}
+                                onChange={(v) =>
+                                    handleChange('applicationDueTime', v)
+                                }
+                                format="HH:mm DD/MM/YYYY"
+                            />
+                        </LocalizationProvider>
                         <h4>Thông tin người nhận CV</h4>
                         <div className="flex items-center justify-center gap-3">
                             <TextField fullWidth label="Họ và tên" />

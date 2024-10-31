@@ -7,6 +7,9 @@ import { formatDateTime } from '../../../utils/dateFormat';
 import { base64Converter } from '../../../utils/base64Converter';
 import { fetchAddJob } from '../../../services/jobService';
 import MultipleUploadImages from '../../../components/MultiImage/MutilpleUploadImages';
+import FieldCard from './FieldCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 
 export function AddAJob() {
     const [job, setJob] = useState({
@@ -35,6 +38,7 @@ export function AddAJob() {
             ...job,
             applicationDueTime: formatDateTime(job.applicationDueTime),
         };
+
         fetchAddJob(newJob).then((data) => {
             toast.success(data.message);
             setJob({
@@ -59,8 +63,6 @@ export function AddAJob() {
         });
     };
 
-    console.log(job);
-
     return (
         <div className="h-full w-full items-center">
             <ul className="flex-start flex gap-10 rounded-md bg-white py-3">
@@ -72,16 +74,24 @@ export function AddAJob() {
                 <AddJobFirstForm job={job} setJob={setJob} />
             </AddressProvider>
             {/* <ImageItem src={src} onChange={setSrc} /> */}
-            <MultipleUploadImages
-                limit={5}
-                value={job.imageList}
-                onChange={(v) => {
-                    setJob({ ...job, imageList: v });
-                }}
-            />
+
+            <div className="mt-3">
+                <FieldCard
+                    icon={<FontAwesomeIcon icon={faBriefcase} />}
+                    title="Ảnh minh hoạ công việc"
+                >
+                    <MultipleUploadImages
+                        limit={5}
+                        value={job.imageList}
+                        onChange={(v) => {
+                            setJob({ ...job, imageList: v });
+                        }}
+                    />
+                </FieldCard>
+            </div>
             <button
                 onClick={handleSubmit}
-                className="rounded-md bg-primary px-4 py-2 font-medium text-white"
+                className="mt-3 rounded-md bg-primary px-4 py-2 font-medium text-white"
             >
                 Thêm tin tuyển dụng
             </button>

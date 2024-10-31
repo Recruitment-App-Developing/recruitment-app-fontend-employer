@@ -40,37 +40,33 @@ const MultipleUploadImages = ({ value, onChange, limit }) => {
     };
 
     return (
-        <>
-            <h3 className="mb-5 text-2xl font-medium">Upload images</h3>
-            <div className="flex flex-wrap items-center gap-4">
-                {images.map((img, index) => (
-                    <PreviewUploadItems
-                        key={img}
-                        src={img}
-                        onEdit={(e) => handleEditImage(index, e)}
-                        onDelete={() => handleRemoveImage(img)}
-                    />
-                ))}
-                <div>
-                    <input
-                        type="file"
-                        id="multiple-upload-images-input-82j2yw9"
-                        className="hidden"
-                        multiple
-                        onChange={handleAddImages}
-                        accept="image/*"
-                    />
-                    <label
-                        htmlFor="multiple-upload-images-input-82j2yw9"
-                        className="mx-3 flex size-10 cursor-pointer items-center justify-center rounded-full
-                            border-2 border-sky-500 text-2xl text-sky-500"
-                    >
-                        {/* Upload button */}
-                        <FontAwesomeIcon icon={faPlus} />
-                    </label>
-                </div>
+        <div className="flex flex-wrap items-center gap-4">
+            {images.map((img, index) => (
+                <PreviewUploadItems
+                    key={img}
+                    src={img}
+                    onEdit={(e) => handleEditImage(index, e)}
+                    onDelete={() => handleRemoveImage(img)}
+                />
+            ))}
+            <div>
+                <input
+                    type="file"
+                    id="multiple-upload-images-input-82j2yw9"
+                    className="hidden"
+                    multiple
+                    onChange={handleAddImages}
+                    accept="image/*"
+                />
+                <label
+                    htmlFor="multiple-upload-images-input-82j2yw9"
+                    className="mx-3 flex size-10 cursor-pointer items-center justify-center rounded-full
+                        border-2 border-sky-500 text-2xl text-sky-500"
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                </label>
             </div>
-        </>
+        </div>
     );
 };
 
