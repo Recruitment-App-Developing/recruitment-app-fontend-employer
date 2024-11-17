@@ -8,7 +8,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Button,
     FormControl,
     Input,
     InputAdornment,
@@ -391,14 +390,6 @@ export default function AddJobFirstForm({ job, setJob }) {
                     title="Thông tin nhận CV"
                 >
                     <div>
-                        {/* <div className="items-start">
-                            <DateTimePicker
-                                label="Hạn chót nhận CV"
-                                onChange={(e) =>
-                                    handleChange('applicationDueTime', e)
-                                }
-                            />
-                        </div> */}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimePicker
                                 label="Hạn chót nhận CV"
@@ -411,9 +402,34 @@ export default function AddJobFirstForm({ job, setJob }) {
                         </LocalizationProvider>
                         <h4>Thông tin người nhận CV</h4>
                         <div className="flex items-center justify-center gap-3">
-                            <TextField fullWidth label="Họ và tên" />
-                            <TextField fullWidth label="Số điện thoại" />
-                            <TextField fullWidth label="Email" type="email" />
+                            <TextField
+                                fullWidth
+                                label="Họ và tên"
+                                onChange={(e) =>
+                                    handleChange('receiverName', e.target.value)
+                                }
+                            />
+                            <TextField
+                                fullWidth
+                                label="Số điện thoại"
+                                onChange={(e) =>
+                                    handleChange(
+                                        'receiverPhone',
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                type="email"
+                                onChange={(e) =>
+                                    handleChange(
+                                        'receiverEmail',
+                                        e.target.value,
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                 </FieldCard>

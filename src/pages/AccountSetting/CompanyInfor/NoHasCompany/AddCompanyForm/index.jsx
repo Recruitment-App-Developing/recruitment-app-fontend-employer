@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { industryData } from '../../../../../constants/IndustryData';
 import {
-    Button,
     FormControl,
     InputLabel,
     MenuItem,
@@ -13,8 +12,10 @@ import { MultiAutocomplete } from '../../../../../components/MultiSelect';
 import ReactQuill from 'react-quill';
 import AddressComponent from '../../../../../components/AddressComponent';
 import { fetchAddCompany } from '../../../../../services/companyService';
-import { data } from 'autoprefixer';
 import { toast } from 'react-toastify';
+import ImageItem from '../../../../../components/ImageItem';
+import { defaultCompnayImage } from '../../../../../constants/defaultImage';
+import AddressList from './AddressList';
 
 export default function AddCompanyForm() {
     const [newCompany, setNewCompany] = useState({
@@ -29,8 +30,8 @@ export default function AddCompanyForm() {
         briefIntro: '',
         detailIntro: '',
         headQuaters: '',
-        subAddress: [],
     });
+    const [subAddress, setSubAddress] = useState();
 
     const handleChange = (key, value) => {
         setNewCompany((prev) => ({
@@ -39,24 +40,39 @@ export default function AddCompanyForm() {
         }));
     };
 
-    console.log('a: ', newCompany);
-
     const handleAddress = (detail, wardCode) => {
         setNewCompany((prev) => ({
             ...prev,
             headQuaters: detail + ';' + wardCode,
         }));
-        console.log(newCompany);
     };
 
     const handleSubmit = () => {
-        fetchAddCompany(newCompany).then((data) => {
+        const updatedSubAddress = subAddress.map(
+            (item) => item.detail + ';' + item.ward,
+        );
+
+        const updatedCompany = {
+            ...newCompany,
+            subAddress: updatedSubAddress,
+        };
+
+        setNewCompany(updatedCompany);
+        fetchAddCompany(updatedCompany).then((data) => {
             toast.success(data.message);
         });
     };
 
     return (
         <div>
+            <div>
+                <ImageItem
+                    onChange={(res) =>
+                        setNewCompany({ ...newCompany, logo: res })
+                    }
+                    src={defaultCompnayImage}
+                />
+            </div>
             <div className="grid grid-cols-2 grid-rows-4 gap-x-4 gap-y-2">
                 <TextField
                     fullWidth
@@ -88,7 +104,7 @@ export default function AddCompanyForm() {
                         )}
                         label="Lĩnh vực hoạt động"
                         placeholder="Lĩnh vực hoạt động"
-                        onChange={(e, v) => {
+                        onChange={(_, v) => {
                             handleChange(
                                 'activeFields',
                                 v.map((item) => item.id),
@@ -146,6 +162,19 @@ export default function AddCompanyForm() {
             <div className="flex flex-col gap-2">
                 <h2>Địa chỉ trụ sở chính</h2>
                 <AddressComponent handleChange={handleAddress} />
+            </div>
+            <div className="flex flex-col gap-2">
+                <h2>Địa chỉ chi nhánh</h2>
+                {/* {subAddress.map((item, index) => (
+                    <AddressComponent
+                        key={index}
+                        handleChange={handleAddress}
+                    />
+                ))}
+                <button className="text-primary" onClick={handleAddSubAddress}>
+                    Thêm chi nhánh mới
+                </button> */}
+                <AddressList setAddressResult={setSubAddress} />
             </div>
             <div>
                 <h4>Mô tả chi tiết công ty</h4>

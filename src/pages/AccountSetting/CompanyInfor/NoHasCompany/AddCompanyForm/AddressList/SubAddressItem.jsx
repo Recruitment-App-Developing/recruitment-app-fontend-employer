@@ -1,3 +1,9 @@
+import { useEffect, useState } from 'react';
+import {
+    fetchListDistrictByProvince,
+    fetchListProvince,
+    fetchListWardByDistrict,
+} from '../../../../../../services/addressService';
 import {
     FormControl,
     InputLabel,
@@ -5,22 +11,17 @@ import {
     Select,
     TextField,
 } from '@mui/material';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import {
-    fetchListDistrictByProvince,
-    fetchListProvince,
-    fetchListWardByDistrict,
-} from '../../services/addressService';
-import { data } from 'autoprefixer';
+import useAddressList from './useAddressList';
 
-export default function AddressComponent({
-    handleChange = () => {},
-    provinceInit = '',
-    districtInit = '',
-    wardInit = '',
-    detailInit = '',
+export default function SubAddressItem({
+    id,
+    provinceInit,
+    districtInit,
+    wardInit,
+    detailInit,
 }) {
+    const { updSubAddress } = useAddressList();
+
     const [provinceList, setProvinceList] = useState();
     const [provinceSelected, setProvinceSelected] = useState(provinceInit);
     const [districtList, setDistrictList] = useState();
@@ -50,7 +51,13 @@ export default function AddressComponent({
     }, [districtSelected]);
 
     useEffect(() => {
-        handleChange(detail, wardSelected);
+        updSubAddress(
+            id,
+            provinceSelected,
+            districtSelected,
+            wardSelected,
+            detail,
+        );
     }, [detail, wardSelected]);
 
     return (

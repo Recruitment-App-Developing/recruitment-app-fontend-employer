@@ -13,7 +13,7 @@ export default function MyCompany({ comapny }) {
         <div className="p-2">
             <h2>Thông tin công ty</h2>
             <div className="flex items-center gap-4 border border-solid border-slate-300 p-3">
-                <Avatar src={comapny?.logo.imageUrl} />
+                <Avatar src={comapny?.logo} />
                 <div className="flex flex-col">
                     <b>{comapny?.name}</b>
                     <span>{comapny?.headQuaters}</span>

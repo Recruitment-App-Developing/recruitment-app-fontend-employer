@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import EmployerRegister from './pages/EmployerRegister';
 import { AddAJob } from './pages/JobManagement/AddJob';
 import JobInfor from './pages/JobManagement/JobDetail/JobInfor';
+import MyInfor from './pages/AccountSetting/MyInfor';
 
 export const route = createBrowserRouter([
     {
@@ -83,7 +84,7 @@ export const route = createBrowserRouter([
                     {
                         id: 'my-info',
                         index: true,
-                        element: <div>My Info</div>,
+                        element: <MyInfor />,
                     },
                     {
                         id: 'company-info',
