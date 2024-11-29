@@ -45,14 +45,6 @@ export default function AddressEditModal({
     useEffect(() => {
         if (open) {
             fetchListProvince().then((data) => setProvinceList(data.data));
-            // const fetchProvince = async () => {
-            //     const res = await axios.get(
-            //         `https://open.oapi.vn/location/provinces`,
-            //     );
-            //     const data = await res.data;
-            //     setProvinceList(data.data);
-            // };
-            // fetchProvince();
         }
     }, [open]);
 
@@ -61,14 +53,6 @@ export default function AddressEditModal({
             fetchListDistrictByProvince(provinceSelected).then((data) =>
                 setDistrictList(data.data),
             );
-            // const fetchDistrict = async () => {
-            //     const res = await axios.get(
-            //         `https://open.oapi.vn/location/districts?provinceId=${provinceSelected}`,
-            //     );
-            //     const data = await res.data;
-            //     setDistrictList(data.data);
-            // };
-            // fetchDistrict();
         }
     }, [provinceSelected]);
 
@@ -77,14 +61,6 @@ export default function AddressEditModal({
             fetchListWardByDistrict(districtSelected).then((data) =>
                 setWardList(data.data),
             );
-            // const fetchWard = async () => {
-            //     const res = await axios.get(
-            //         `https://open.oapi.vn/location/wards?districtId=${districtSelected}`,
-            //     );
-            //     const data = await res.data;
-            //     setWardList(data.data);
-            // };
-            // fetchWard();
         }
     }, [districtSelected]);
 
@@ -105,111 +81,136 @@ export default function AddressEditModal({
                 open={open}
                 onClose={() => setOpen(false)}
                 aria-labelledby="responsive-dialog-title"
-                maxWidth="650px"
+                maxWidth="700px"
                 PaperProps={{
                     style: {
-                        width: '500px',
-                        height: '300px',
+                        width: '700px',
                     },
                 }}
             >
-                <span>
-                    Địa chỉ cũ: {oldDetail}, {wardName}, {districtName},{' '}
-                    {provinceName}
-                </span>
-                <div>
-                    <FormControl sx={{ width: '400px' }}>
-                        <InputLabel id="province-list-label">
-                            Tỉnh/Thành phố
-                        </InputLabel>
-                        <Select
-                            labelId="province-list-label"
-                            label="Tỉnh/Thành phố"
-                            value={provinceSelected}
-                            onChange={(e) =>
-                                setProvinceSelected(e.target.value)
-                            }
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: 500,
-                                    },
-                                },
-                            }}
-                        >
-                            {provinceList?.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{ width: '400px' }}>
-                        <InputLabel id="district-list-label">
-                            Quận/Huyện
-                        </InputLabel>
-                        <Select
-                            labelId="district-list-label"
-                            label="Quận/Huyện"
-                            value={districtSelected}
-                            onChange={(e) =>
-                                setDistrictSelected(e.target.value)
-                            }
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: 500,
-                                    },
-                                },
-                            }}
-                        >
-                            {districtList?.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{ width: '400px' }}>
-                        <InputLabel id="ward-list-label">Xã/Phường</InputLabel>
-                        <Select
-                            labelId="ward-list-label"
-                            label="Xã/Phường"
-                            value={wardSelected}
+                <div className="flex flex-col gap-4 px-7 py-5">
+                    <span className="text-lg font-semibold">
+                        Địa chỉ cũ:{' '}
+                        <span className="text-xl">
+                            {oldDetail}, {wardName}, {districtName},{' '}
+                            {provinceName}
+                        </span>
+                    </span>
+                    <h3 className="text-lg">Địa chỉ mới</h3>
+                    <div>
+                        <div className="mb-4 flex gap-3">
+                            <FormControl sx={{ width: '400px' }}>
+                                <InputLabel id="province-list-label">
+                                    Tỉnh/Thành phố
+                                </InputLabel>
+                                <Select
+                                    labelId="province-list-label"
+                                    label="Tỉnh/Thành phố"
+                                    value={provinceSelected}
+                                    onChange={(e) =>
+                                        setProvinceSelected(e.target.value)
+                                    }
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 500,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {provinceList?.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{ width: '400px' }}>
+                                <InputLabel id="district-list-label">
+                                    Quận/Huyện
+                                </InputLabel>
+                                <Select
+                                    labelId="district-list-label"
+                                    label="Quận/Huyện"
+                                    value={districtSelected}
+                                    onChange={(e) =>
+                                        setDistrictSelected(e.target.value)
+                                    }
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 500,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {districtList?.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{ width: '400px' }}>
+                                <InputLabel id="ward-list-label">
+                                    Xã/Phường
+                                </InputLabel>
+                                <Select
+                                    labelId="ward-list-label"
+                                    label="Xã/Phường"
+                                    value={wardSelected}
+                                    onChange={(e) => {
+                                        setWardSelected(e.target.value);
+                                        setAddress({
+                                            ...address,
+                                            wardCode: e.target.value,
+                                        });
+                                    }}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 500,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {wardList?.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <TextField
+                            fullWidth
+                            value={detail}
                             onChange={(e) => {
-                                setWardSelected(e.target.value);
+                                setDetail(e.target.value);
                                 setAddress({
                                     ...address,
-                                    wardCode: e.target.value,
+                                    detail: e.target.value,
                                 });
                             }}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: 500,
-                                    },
-                                },
-                            }}
-                        >
-                            {wardList?.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        fullWidth
-                        value={detail}
-                        onChange={(e) => {
-                            setDetail(e.target.value);
-                            setAddress({ ...address, detail: e.target.value });
-                        }}
-                        disabled={!wardSelected}
-                        label="Địa chỉ chi tiết"
-                        variant="outlined"
-                    />
-                    <Button onClick={handleSubmit}>Chỉnh sửa</Button>
+                            disabled={!wardSelected}
+                            label="Địa chỉ chi tiết"
+                            variant="outlined"
+                        />
+                        <div className="mt-4 flex w-full items-end justify-end gap-5">
+                            <button
+                                onClick={() => setOpen(false)}
+                                className="rounded-md bg-slate-300 px-5 py-2 text-lg font-semibold text-black"
+                            >
+                                Huỷ
+                            </button>
+                            <button
+                                onClick={handleSubmit}
+                                className="rounded-md bg-success px-5 py-2 text-lg font-semibold text-white"
+                            >
+                                Chỉnh sửa
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </Dialog>
         </>

@@ -21,13 +21,6 @@ export default function ConfirmDeleteModal({
             setAddressList(data.data);
             setOpen(false);
         });
-        // useEffect(() => {
-        //     fetchDeleteJobAddress(jobId, jobAddressId).then((data) => {
-        //         toast.success(data.message);
-        //         setAddressList(data.data);
-        //         setOpen(false);
-        //     });
-        // }, [jobId, jobAddressId]);
     };
 
     return (
@@ -35,29 +28,42 @@ export default function ConfirmDeleteModal({
             open={open}
             onClose={() => setOpen(false)}
             aria-labelledby="responsive-dialog-title"
-            maxWidth="650px"
+            maxWidth="700px"
             PaperProps={{
                 style: {
-                    width: '500px',
-                    height: '300px',
+                    width: '700px',
                 },
             }}
         >
-            <div className="flex flex-col">
-                <span>Bạn có chắc chắn muốn xoá địa chỉ:</span>
-                <b>
-                    {detail +
-                        ', ' +
-                        wardName +
-                        ', ' +
-                        districtName +
-                        ', ' +
-                        provinceName}
-                </b>
-            </div>
-            <div className="flex items-center justify-center">
-                <button onClick={handleConfirm}>Chắc chắn</button>
-                <button onClick={() => setOpen(false)}>Huỷ bỏ</button>
+            <div className="px-7 py-5">
+                <div className="flex flex-col gap-4">
+                    <span className="text-2xl">
+                        Bạn có chắc chắn muốn xoá địa chỉ:
+                    </span>
+                    <b className="text-xl text-success">
+                        {detail +
+                            ', ' +
+                            wardName +
+                            ', ' +
+                            districtName +
+                            ', ' +
+                            provinceName}
+                    </b>
+                </div>
+                <div className="mt-7 flex items-center justify-center gap-5">
+                    <button
+                        onClick={handleConfirm}
+                        className="rounded-md bg-success px-5 py-1 text-lg font-semibold text-white"
+                    >
+                        Chắc chắn
+                    </button>
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="rounded-md bg-slate-300 px-5 py-1 text-lg font-semibold text-black"
+                    >
+                        Huỷ bỏ
+                    </button>
+                </div>
             </div>
         </Dialog>
     );

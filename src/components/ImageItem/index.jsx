@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import ImageCropper from '../ImageCropper';
 import { base64Converter } from '../../utils/base64Converter';
+import cn from '../../utils/cn';
 import clsx from 'clsx';
 
-export default function ImageItem({ src, onChange }) {
+export default function ImageItem({ src, onChange, height, width }) {
     const [open, setOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState();
     const [preview, setPreview] = useState(src);
@@ -38,7 +39,13 @@ export default function ImageItem({ src, onChange }) {
                 type="file"
                 onChange={handleInputChnage}
             />
-            <div className="relative h-20 w-20 rounded-full border">
+            <div
+                className={cn(
+                    'relative h-20 w-20 rounded-full border',
+                    height,
+                    width,
+                )}
+            >
                 <img
                     src={preview}
                     alt="User avatar"

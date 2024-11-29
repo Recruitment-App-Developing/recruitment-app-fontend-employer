@@ -10,7 +10,7 @@ export default function AddressListForm({ setAddressResult }) {
     }, [addressList]);
 
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             {addressList.map((item, index) => (
                 <SubAddressItem
                     key={index}

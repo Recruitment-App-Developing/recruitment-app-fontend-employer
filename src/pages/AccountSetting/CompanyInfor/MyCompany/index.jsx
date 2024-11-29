@@ -1,47 +1,50 @@
 import { Avatar } from '@mui/material';
 
 export default function MyCompany({ comapny }) {
-    const handleActiveFields = () => {
-        let temp;
-        comapny.activeFields.forEach((item) => {
-            temp += item + ', ';
-        });
-        return temp;
-    };
+    // const handleActiveFields = () => {
+    //     let temp;
+    //     comapny?.activeFields.forEach((item) => {
+    //         temp += item + ', ';
+    //     });
+    //     return temp;
+    // };
 
     return (
         <div className="p-2">
             <h2>Thông tin công ty</h2>
             <div className="flex items-center gap-4 border border-solid border-slate-300 p-3">
-                <Avatar src={comapny?.logo} />
-                <div className="flex flex-col">
-                    <b>{comapny?.name}</b>
+                <Avatar
+                    sx={{ width: '80px', height: '80px' }}
+                    src={comapny?.logo}
+                />
+                <div className="ml-8 flex flex-col gap-3">
+                    <b className="text-2xl">{comapny?.name}</b>
                     <span>{comapny?.headQuaters}</span>
                 </div>
             </div>
-            <table className="w-full" cellPadding={5}>
+            <table className="mt-4 w-full" cellPadding={5}>
                 <tr>
-                    <td>Mã số thuế:</td>
+                    <td className="text-nowrap">Mã số thuế:</td>
                     <td>{comapny?.taxCode}</td>
-                    <td>Website:</td>
+                    <td className="text-nowrap">Website:</td>
                     <td>{comapny?.urlCom}</td>
                 </tr>
                 <tr>
-                    <td>Số điện thoại:</td>
+                    <td className="text-nowrap">Số điện thoại:</td>
                     <td>{comapny?.phoneNumber}</td>
-                    <td>Quy mô:</td>
+                    <td className="text-nowrap">Quy mô:</td>
                     <td>{comapny?.employeeScale}</td>
                 </tr>
                 <tr>
-                    <td>Lĩnh vực hoạt động:</td>
-                    <td colSpan={3}>{handleActiveFields}</td>
+                    <td className="text-nowrap">Lĩnh vực hoạt động:</td>
+                    <td colSpan={3}>{comapny?.activeFields.join(', ')}</td>
                 </tr>
                 <tr>
-                    <td>Địa chỉ trụ sở chính:</td>
+                    <td className="text-nowrap">Địa chỉ trụ sở chính:</td>
                     <td colSpan={3}>{comapny?.headQuaters}</td>
                 </tr>
                 <tr>
-                    <td>Mô tả công ty:</td>
+                    <td className="text-nowrap">Mô tả công ty:</td>
                     <td colSpan={3}>
                         <p
                             dangerouslySetInnerHTML={{

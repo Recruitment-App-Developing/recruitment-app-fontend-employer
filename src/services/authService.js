@@ -14,3 +14,8 @@ export const fetchRegisterEmployer = async (data) => {
     const res = await axiosInstance.post(`employer/register`, data);
     return res.data;
 };
+
+export const fetchChangePassword = async (data) => {
+    const res = await axiosInstance.post(`auth/change-password`, data);
+    return res.data;
+};

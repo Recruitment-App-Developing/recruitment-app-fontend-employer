@@ -65,12 +65,14 @@ export default function AddCompanyForm() {
 
     return (
         <div>
-            <div>
+            <div className="my-6 flex items-center justify-center">
                 <ImageItem
                     onChange={(res) =>
                         setNewCompany({ ...newCompany, logo: res })
                     }
                     src={defaultCompnayImage}
+                    height="h-36"
+                    width="w-36"
                 />
             </div>
             <div className="grid grid-cols-2 grid-rows-4 gap-x-4 gap-y-2">
@@ -163,7 +165,7 @@ export default function AddCompanyForm() {
                 <h2>Địa chỉ trụ sở chính</h2>
                 <AddressComponent handleChange={handleAddress} />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="mt-3 flex flex-col gap-4">
                 <h2>Địa chỉ chi nhánh</h2>
                 {/* {subAddress.map((item, index) => (
                     <AddressComponent
@@ -176,7 +178,7 @@ export default function AddCompanyForm() {
                 </button> */}
                 <AddressList setAddressResult={setSubAddress} />
             </div>
-            <div>
+            <div className="my-5">
                 <h4>Mô tả chi tiết công ty</h4>
                 <ReactQuill
                     theme="snow"
@@ -185,12 +187,14 @@ export default function AddCompanyForm() {
                     placeholder="Nhập vào mô tả"
                 />
             </div>
-            <button
-                onClick={handleSubmit}
-                className="rounded-md bg-primary px-7 py-3 text-lg text-white"
-            >
-                Thêm mới
-            </button>
+            <div className="flex w-full items-end justify-end">
+                <button
+                    onClick={handleSubmit}
+                    className="rounded-md bg-primary px-7 py-2 text-lg text-white"
+                >
+                    Thêm mới
+                </button>
+            </div>
         </div>
     );
 }

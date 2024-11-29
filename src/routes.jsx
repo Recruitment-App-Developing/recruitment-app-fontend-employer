@@ -12,6 +12,8 @@ import EmployerRegister from './pages/EmployerRegister';
 import { AddAJob } from './pages/JobManagement/AddJob';
 import JobInfor from './pages/JobManagement/JobDetail/JobInfor';
 import MyInfor from './pages/AccountSetting/MyInfor';
+import Dashboard from './pages/Dashboard';
+import ChangePassword from './pages/AccountSetting/ChangePassword';
 
 export const route = createBrowserRouter([
     {
@@ -20,9 +22,9 @@ export const route = createBrowserRouter([
         element: <DefaultLayout />,
         children: [
             {
-                id: 'home',
+                id: 'dashboard',
                 path: '/',
-                element: <div>Home</div>,
+                element: <Dashboard />,
             },
             {
                 id: 'services',
@@ -79,7 +81,7 @@ export const route = createBrowserRouter([
                     {
                         id: 'change-password',
                         path: 'password',
-                        element: <div>Change password</div>,
+                        element: <ChangePassword />,
                     },
                     {
                         id: 'my-info',

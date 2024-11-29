@@ -22,6 +22,7 @@ export default function useSideBarRoutes() {
                 label: 'Bảng tin',
                 href: '/',
                 icon: faTableCellsLarge,
+                active: pathname === '/',
             },
             {
                 label: 'Dịch vụ của tôi',
