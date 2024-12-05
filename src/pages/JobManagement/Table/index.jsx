@@ -1,7 +1,11 @@
 import {
     Checkbox,
+    FormControl,
     IconButton,
+    InputLabel,
+    MenuItem,
     Paper,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -18,12 +22,15 @@ import { fetchListJobByCompany } from '../../../services/jobService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faEye,
+    faMagnifyingGlass,
     faPenToSquare,
     faTrash,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
+import InputTextIcon from '../../../components/InputTextIcon';
+import { fetchListProvince } from '../../../services/addressService';
 
 // const rowData = [
 //     {
@@ -80,17 +87,31 @@ export default function MyTable() {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [rows, setRows] = useState([]);
+    const [provinces, setProvinces] = useState([]);
+    const [condition, setCondition] = useState({
+        keyword: '',
+        address: 'all',
+    });
 
     useEffect(() => {
-        fetchListJobByCompany(pageSize, currentPage, orderBy, orderDir).then(
-            (data) => {
-                setRows(data.data);
-                setCurrentPage(data.meta.currentPage);
-                setPageSize(data.meta.pageSize);
-                setTotalItem(data.meta.totalItems);
-            },
-        );
-    }, [pageSize, currentPage, orderBy, orderDir]);
+        fetchListProvince().then((data) => setProvinces(data.data));
+    }, []);
+
+    useEffect(() => {
+        const queryString = new URLSearchParams(condition);
+        fetchListJobByCompany(
+            pageSize,
+            currentPage,
+            orderBy,
+            orderDir,
+            queryString,
+        ).then((data) => {
+            setRows(data.data);
+            setCurrentPage(data.meta.currentPage);
+            setPageSize(data.meta.pageSize);
+            setTotalItem(data.meta.totalItems);
+        });
+    }, [condition, pageSize, currentPage, orderBy, orderDir]);
 
     const handleSelectAllClick = (e) => {
         if (e.target.checked) {
@@ -137,6 +158,41 @@ export default function MyTable() {
 
     return (
         <div>
+            <div className="mb-4 flex w-full flex-grow items-center rounded-md">
+                <InputTextIcon
+                    placeholder="Tìm kiếm theo tên công việc"
+                    value={condition?.keyword || ''}
+                    onChange={(e) =>
+                        setCondition({ ...condition, keyword: e.target.value })
+                    }
+                    className="h-10 w-full"
+                    classInput="rounded-r-none"
+                    leftIcon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+                />
+                <FormControl sx={{ width: '200px' }} size="small">
+                    <InputLabel id="filter-address-label">Địa chỉ</InputLabel>
+                    <Select
+                        labelId="filter-address-label"
+                        label="Địa chỉ"
+                        value={condition?.address}
+                        onChange={(e) =>
+                            setCondition({
+                                ...condition,
+                                address: e.target.value,
+                            })
+                        }
+                    >
+                        <MenuItem value="all">
+                            <em>Tất cả</em>
+                        </MenuItem>
+                        {provinces.map((item) => (
+                            <MenuItem key={item.id} value={item.id}>
+                                {item.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </div>
             <Paper sx={{ width: '100%' }}>
                 <EnhancedTableToolbar
                     numSelected={selected.length}
@@ -183,7 +239,6 @@ export default function MyTable() {
                                             />
                                         </TableCell>
                                         <TableCell
-                                            key={index}
                                             sx={{
                                                 maxWidth: '300px',
                                                 overflow: 'hidden',
@@ -194,7 +249,6 @@ export default function MyTable() {
                                             {row.name}
                                         </TableCell>
                                         <TableCell
-                                            key={index}
                                             sx={{
                                                 width: '190px',
                                             }}
@@ -202,7 +256,6 @@ export default function MyTable() {
                                             {row.postingTime}
                                         </TableCell>
                                         <TableCell
-                                            key={index}
                                             sx={{
                                                 width: '100px',
                                                 textAlign: 'right',
@@ -211,7 +264,6 @@ export default function MyTable() {
                                             {row.numberOfView}
                                         </TableCell>
                                         <TableCell
-                                            key={index}
                                             sx={{
                                                 width: '100px',
                                                 textAlign: 'right',
@@ -219,10 +271,7 @@ export default function MyTable() {
                                         >
                                             {row.numberOfApplicated}
                                         </TableCell>
-                                        <TableCell
-                                            key={index}
-                                            sx={{ maxWidth: '100px' }}
-                                        >
+                                        <TableCell sx={{ maxWidth: '100px' }}>
                                             <div className="flex items-center justify-between pl-3">
                                                 <Tooltip title="Xem danh sách Ứng viên">
                                                     <button

@@ -11,9 +11,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+import useAuth from './useAuth';
 
 export default function useSideBarRoutes() {
     const { pathname } = useLocation();
+    const { logout } = useAuth();
 
     const routes = useMemo(
         () => [
@@ -24,21 +26,21 @@ export default function useSideBarRoutes() {
                 icon: faTableCellsLarge,
                 active: pathname === '/',
             },
-            {
-                label: 'Dịch vụ của tôi',
-                href: '/services',
-                icon: faWandMagic,
-                active: pathname === '/services',
-            },
+            // {
+            //     label: 'Dịch vụ của tôi',
+            //     href: '/services',
+            //     icon: faWandMagic,
+            //     active: pathname === '/services',
+            // },
             {
                 divider: true,
             },
-            {
-                label: 'Chiến dịch tuyển dụng',
-                href: '/recruitment-campaigns',
-                icon: faBriefcase,
-                active: pathname === '/recruitment-campaigns',
-            },
+            // {
+            //     label: 'Chiến dịch tuyển dụng',
+            //     href: '/recruitment-campaigns',
+            //     icon: faBriefcase,
+            //     active: pathname === '/recruitment-campaigns',
+            // },
             {
                 label: 'Tin tuyển dụng',
                 href: '/jobs',
@@ -51,12 +53,12 @@ export default function useSideBarRoutes() {
                 icon: faMarker,
                 active: pathname === '/create-job',
             },
-            {
-                label: 'Quản lý CV',
-                href: '/cvs-management',
-                icon: faCircleUser,
-                active: pathname === '/cvs-management',
-            },
+            // {
+            //     label: 'Quản lý CV',
+            //     href: '/cvs-management',
+            //     icon: faCircleUser,
+            //     active: pathname === '/cvs-management',
+            // },
             {
                 divider: true,
             },
@@ -77,7 +79,10 @@ export default function useSideBarRoutes() {
             },
             {
                 label: 'Đăng xuất',
-                onClick: open,
+                onClick: () => {
+                    logout();
+                    console.log('Ok1');
+                },
                 icon: faArrowRightFromBracket,
             },
         ],

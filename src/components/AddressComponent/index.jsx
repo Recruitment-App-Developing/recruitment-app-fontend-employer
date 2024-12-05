@@ -12,7 +12,6 @@ import {
     fetchListProvince,
     fetchListWardByDistrict,
 } from '../../services/addressService';
-import { data } from 'autoprefixer';
 
 export default function AddressComponent({
     handleChange = () => {},

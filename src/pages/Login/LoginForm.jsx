@@ -27,7 +27,6 @@ export default function LoginForm() {
     return (
         <div className="flex flex-col gap-10">
             <TextField
-                id="input-with-icon-textfield"
                 label="Tên đăng nhập"
                 fullWidth
                 onChange={(e) =>
@@ -43,7 +42,6 @@ export default function LoginForm() {
                 variant="outlined"
             />
             <TextField
-                id="input-with-icon-textfield"
                 label="Mật khẩu"
                 fullWidth
                 type="password"

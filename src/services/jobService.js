@@ -5,9 +5,10 @@ export const fetchListJobByCompany = async (
     currentPage = 0,
     orderBy = 'id',
     orderDir,
+    condidtion,
 ) => {
     const res = await axiosInstance.get(
-        `job/byCompany?pageSize=${pageSize}&currentPage=${currentPage}&sortDir=${orderDir}&sortField=${orderBy}`,
+        `job/byCompany?pageSize=${pageSize}&currentPage=${currentPage}&sortDir=${orderDir}&sortField=${orderBy}&${condidtion}`,
     );
     return res.data;
 };
