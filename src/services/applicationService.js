@@ -27,3 +27,8 @@ export const fetchSearchCandidateByJob = async (
     );
     return res.data;
 };
+
+export const fetchUpdateStatus = async (data) => {
+    const res = await axiosInstance.put(`application/update-status`, data);
+    return res.data;
+};

@@ -10,7 +10,6 @@ export default function AddressCom({ onChange }) {
             item.items.map((subItem) => `${subItem.detail};${subItem.ward}`),
         );
 
-        console.log('Temp', temp);
         onChange?.(temp);
     }, [addressTemp]);
 

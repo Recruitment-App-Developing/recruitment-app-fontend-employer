@@ -92,7 +92,10 @@ export default function StepperCustom({
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+                        <Typography
+                            component="div"
+                            sx={{ mt: 2, mb: 1, py: 1 }}
+                        >
                             {stepperContent[activeStep]}
                         </Typography>
                         <Box
@@ -120,6 +123,7 @@ export default function StepperCustom({
                             {activeStep !== stepperTitle.length &&
                                 (completed[activeStep] ? (
                                     <Typography
+                                        component="div"
                                         variant="caption"
                                         sx={{ display: 'inline-block' }}
                                     >

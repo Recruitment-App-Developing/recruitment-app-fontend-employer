@@ -15,6 +15,10 @@ export function AddAJob() {
         workMethod: '',
         sexRequired: '',
         salary: '',
+        salaryType: '',
+        salaryUnit: '',
+        salaryFrom: null,
+        salaryTo: null,
         jobExp: '',
         applicationDueTime: new Date(),
         jobBenefit: '',
@@ -37,6 +41,8 @@ export function AddAJob() {
             applicationDueTime: formatDateTime(job.applicationDueTime),
         };
 
+        console.log(newJob);
+
         fetchAddJob(newJob).then((data) => {
             toast.success(data.message);
             setJob({
@@ -47,6 +53,10 @@ export function AddAJob() {
                 workMethod: '',
                 sexRequired: '',
                 salary: '',
+                salaryType: '',
+                salaryUnit: '',
+                salaryFrom: null,
+                salaryTo: null,
                 jobExp: '',
                 applicationDueTime: new Date(),
                 jobBenefit: '',

@@ -1,4 +1,5 @@
 import {
+    Autocomplete,
     FormControl,
     InputLabel,
     MenuItem,
@@ -51,86 +52,67 @@ export default function AddressComponent({
     useEffect(() => {
         handleChange(detail, wardSelected);
     }, [detail, wardSelected]);
-
     return (
         <div className="flex items-center justify-center gap-3">
-            <FormControl fullWidth>
-                <InputLabel id="province-list-label">Tỉnh/Thành phố</InputLabel>
-                <Select
-                    labelId="province-list-label"
-                    label="Tỉnh/Thành phố"
-                    value={provinceSelected}
-                    onChange={(e) => {
-                        setProvinceSelected(e.target.value);
-                        setDistrictSelected('');
-                        setWardSelected('');
-                    }}
-                    MenuProps={{
-                        PaperProps: {
-                            style: {
-                                maxHeight: 500,
-                            },
-                        },
-                    }}
-                >
-                    {provinceList?.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                            {item.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel id="district-list-label">Quận/Huyện</InputLabel>
-                <Select
-                    labelId="district-list-label"
-                    label="Quận/Huyện"
-                    value={districtSelected}
-                    onChange={(e) => {
-                        setDistrictSelected(e.target.value);
-                        setWardSelected('');
-                    }}
-                    disabled={!provinceSelected}
-                    MenuProps={{
-                        PaperProps: {
-                            style: {
-                                maxHeight: 500,
-                            },
-                        },
-                    }}
-                >
-                    {districtList?.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                            {item.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel id="ward-list-label">Xã/Phường</InputLabel>
-                <Select
-                    labelId="ward-list-label"
-                    label="Xã/Phường"
-                    value={wardSelected}
-                    onChange={(e) => {
-                        setWardSelected(e.target.value);
-                    }}
-                    disabled={!districtSelected}
-                    MenuProps={{
-                        PaperProps: {
-                            style: {
-                                maxHeight: 500,
-                            },
-                        },
-                    }}
-                >
-                    {wardList?.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                            {item.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <Autocomplete
+                disablePortal
+                options={provinceList || []}
+                getOptionLabel={(option) => option.name || ''}
+                value={
+                    provinceList
+                        ? provinceList.find(
+                              (item) => item.id === provinceSelected,
+                          ) || null
+                        : null
+                }
+                onChange={(event, newValue) => {
+                    setProvinceSelected(newValue?.id || '');
+                    setDistrictSelected('');
+                    setWardSelected('');
+                }}
+                sx={{ width: '100%' }}
+                renderInput={(params) => (
+                    <TextField {...params} label="Tỉnh/Thành phố" />
+                )}
+            />
+            <Autocomplete
+                disablePortal
+                options={districtList || []}
+                getOptionLabel={(option) => option.name || ''}
+                value={
+                    districtList
+                        ? districtList.find(
+                              (item) => item.id === districtSelected,
+                          ) || null
+                        : null
+                }
+                onChange={(event, newValue) => {
+                    setDistrictSelected(newValue?.id || '');
+                    setWardSelected('');
+                }}
+                sx={{ width: '100%' }}
+                renderInput={(params) => (
+                    <TextField {...params} label="Quận/Huyện" />
+                )}
+            />
+            <Autocomplete
+                disablePortal
+                options={wardList || []}
+                getOptionLabel={(option) => option.name || ''}
+                value={
+                    wardList
+                        ? wardList.find((item) => item.id === wardSelected) ||
+                          null
+                        : null
+                }
+                onChange={(event, newValue) => {
+                    setWardSelected(newValue?.id || '');
+                }}
+                sx={{ width: '100%' }}
+                renderInput={(params) => (
+                    <TextField {...params} label="Xã/Phường" />
+                )}
+            />
             <TextField
                 fullWidth
                 value={detail}

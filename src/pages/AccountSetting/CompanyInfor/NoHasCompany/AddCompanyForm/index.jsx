@@ -16,8 +16,12 @@ import { toast } from 'react-toastify';
 import ImageItem from '../../../../../components/ImageItem';
 import { defaultCompnayImage } from '../../../../../constants/defaultImage';
 import AddressList from './AddressList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { DEFAULT_BANNER_COMPANY } from '../../../../../assets/images/defaulBannerCompany';
 
 export default function AddCompanyForm() {
+    const [image, setImage] = useState(DEFAULT_BANNER_COMPANY);
     const [newCompany, setNewCompany] = useState({
         name: '',
         logo: '',
@@ -30,6 +34,7 @@ export default function AddCompanyForm() {
         briefIntro: '',
         detailIntro: '',
         headQuaters: '',
+        banner: image,
     });
     const [subAddress, setSubAddress] = useState();
 
@@ -54,6 +59,7 @@ export default function AddCompanyForm() {
 
         const updatedCompany = {
             ...newCompany,
+            banner: image,
             subAddress: updatedSubAddress,
         };
 
@@ -63,9 +69,20 @@ export default function AddCompanyForm() {
         });
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setImage(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    console.log(image);
+
     return (
         <div>
-            <div className="my-6 flex items-center justify-center">
+            <div className="my-6 flex items-center justify-between px-3">
                 <ImageItem
                     onChange={(res) =>
                         setNewCompany({ ...newCompany, logo: res })
@@ -74,6 +91,33 @@ export default function AddCompanyForm() {
                     height="h-36"
                     width="w-36"
                 />
+                <div className="relative w-[540px]">
+                    <div className="h-[150px] w-[500px] overflow-hidden rounded border bg-white">
+                        {image ? (
+                            <img
+                                src={image}
+                                alt="Uploaded"
+                                className="h-full w-full object-fill"
+                            />
+                        ) : (
+                            <div className="text-gray-500 flex h-full w-full items-center justify-center">
+                                No image uploaded
+                            </div>
+                        )}
+                    </div>
+                    <label
+                        className="absolute bottom-0 right-0 cursor-pointer rounded bg-none px-3 py-1 text-lg
+                            text-success"
+                    >
+                        <FontAwesomeIcon icon={faUpload} />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
+                    </label>
+                </div>
             </div>
             <div className="grid grid-cols-2 grid-rows-4 gap-x-4 gap-y-2">
                 <TextField

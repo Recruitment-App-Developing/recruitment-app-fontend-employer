@@ -16,6 +16,8 @@ import { Avatar, Badge } from '@mui/material';
 import BasicPopover from '../../../components/Popover';
 import useSider from '../../../hooks/useSider';
 import useAuth from '../../../hooks/useAuth';
+import { USER_INFOR } from '../../../constants/Constant';
+import { defaultAvatar } from '../../../constants/defaultImage';
 
 export default function Header() {
     const { toggle } = useSider();
@@ -25,6 +27,8 @@ export default function Header() {
     const icon = 'bg-white rounded-[50%] text-[#3b546f] w-2 h-2 p-[3px]';
 
     const { logout } = useAuth();
+
+    const userInfor = JSON.parse(localStorage.getItem(USER_INFOR));
 
     return (
         <div>
@@ -94,7 +98,7 @@ export default function Header() {
                         <div className={cn(button, 'gap-3 px-1 pr-3')}>
                             <Avatar
                                 alt="avatar"
-                                src="https://mui.com/static/images/avatar/1.jpg"
+                                src={userInfor.avatar || defaultAvatar}
                                 sx={{ width: 22, height: 22 }}
                             />
                             <FontAwesomeIcon icon={faCaretDown} />

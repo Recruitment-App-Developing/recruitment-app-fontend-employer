@@ -1,3 +1,5 @@
+import { USER_INFOR } from '../constants/Constant';
+
 const ACCESS_TOKEN = 'TopCV_access_token';
 
 export const setToken = (token) => {
@@ -10,4 +12,5 @@ export const getToken = () => {
 
 export const deleteToken = () => {
     localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USER_INFOR);
 };

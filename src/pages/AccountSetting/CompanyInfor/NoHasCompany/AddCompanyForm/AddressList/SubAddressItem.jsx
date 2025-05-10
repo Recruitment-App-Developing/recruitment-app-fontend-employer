@@ -12,6 +12,8 @@ import {
     TextField,
 } from '@mui/material';
 import useAddressList from './useAddressList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function SubAddressItem({
     id,
@@ -20,7 +22,7 @@ export default function SubAddressItem({
     wardInit,
     detailInit,
 }) {
-    const { updSubAddress } = useAddressList();
+    const { updSubAddress, deleteAddress } = useAddressList();
 
     const [provinceList, setProvinceList] = useState();
     const [provinceSelected, setProvinceSelected] = useState(provinceInit);
@@ -149,6 +151,12 @@ export default function SubAddressItem({
                 label="Địa chỉ chi tiết"
                 variant="outlined"
             />
+            <button className="mx-3 text-lg text-red">
+                <FontAwesomeIcon
+                    icon={faTrashAlt}
+                    onClick={() => deleteAddress(id)}
+                />
+            </button>
         </div>
     );
 }

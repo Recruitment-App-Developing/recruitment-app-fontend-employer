@@ -28,11 +28,16 @@ import { genderData } from '../../../constants/GenderData';
 import { rankData } from '../../../constants/RankData';
 import { experienceData } from '../../../constants/ExperienceData';
 import { moneyTypeData } from '../../../constants/MoneyTypeData';
-import { salaryTypeData } from '../../../constants/SalaryTypeData';
+import {
+    SALARY_ABOUT,
+    SALARY_TO,
+    salaryTypeData,
+} from '../../../constants/SalaryTypeData';
 import { MultiAutocomplete } from '../../../components/MultiSelect';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { formatMoney, formatMoneyToInt } from '../../../utils/common';
 
 export default function AddJobFirstForm({ job, setJob }) {
     const classInput = '!text-base';
@@ -256,9 +261,13 @@ export default function AddJobFirstForm({ job, setJob }) {
                                             labelId="money-type-label"
                                             label="Loại tiền tệ"
                                             value={moneyType}
-                                            onChange={(e) =>
-                                                setMoneyType(e.target.value)
-                                            }
+                                            onChange={(e) => {
+                                                setMoneyType(e.target.value);
+                                                handleChange(
+                                                    'salaryUnit',
+                                                    e.target.value,
+                                                );
+                                            }}
                                             MenuProps={{
                                                 PaperProps: {
                                                     style: {
@@ -285,9 +294,13 @@ export default function AddJobFirstForm({ job, setJob }) {
                                             labelId="salary-type-label"
                                             label="Kiểu lương"
                                             value={salaryType}
-                                            onChange={(e) =>
-                                                setSalaryType(e.target.value)
-                                            }
+                                            onChange={(e) => {
+                                                setSalaryType(e.target.value);
+                                                handleChange(
+                                                    'salaryType',
+                                                    e.target.value,
+                                                );
+                                            }}
                                             MenuProps={{
                                                 PaperProps: {
                                                     style: {
@@ -298,34 +311,74 @@ export default function AddJobFirstForm({ job, setJob }) {
                                         >
                                             {salaryTypeData.map((item) => (
                                                 <MenuItem
-                                                    key={item}
-                                                    value={item}
+                                                    key={item.code}
+                                                    value={item.code}
                                                 >
-                                                    {item}
+                                                    {item.name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
                                     </FormControl>
-                                    {moneyType && salaryType && (
-                                        <TextField
-                                            label={salaryType}
-                                            fullWidth
-                                            value={job.salary}
-                                            onChange={(e) =>
-                                                handleChange(
-                                                    'salary',
-                                                    e.target.value,
-                                                )
-                                            }
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        {moneyType}
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
+                                    {moneyType &&
+                                        salaryType &&
+                                        salaryType !== SALARY_TO && (
+                                            <TextField
+                                                label={
+                                                    salaryType === SALARY_ABOUT
+                                                        ? 'Từ'
+                                                        : salaryTypeData.find(
+                                                              (item) =>
+                                                                  item.code ===
+                                                                  salaryType,
+                                                          )?.name
+                                                }
+                                                fullWidth
+                                                value={formatMoney(
+                                                    job.salaryFrom,
+                                                )}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        'salaryFrom',
+                                                        formatMoneyToInt(
+                                                            e.target.value,
+                                                        ),
+                                                    )
+                                                }
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            {moneyType}
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        )}
+                                    {moneyType &&
+                                        (salaryType === SALARY_ABOUT ||
+                                            salaryType === SALARY_TO) && (
+                                            <TextField
+                                                label="Đến"
+                                                fullWidth
+                                                value={formatMoney(
+                                                    job.salaryTo,
+                                                )}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        'salaryTo',
+                                                        formatMoneyToInt(
+                                                            e.target.value,
+                                                        ),
+                                                    )
+                                                }
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            {moneyType}
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        )}
                                 </div>
                                 <div>
                                     <h4 className="my-4">Khu vực làm việc</h4>
@@ -352,6 +405,7 @@ export default function AddJobFirstForm({ job, setJob }) {
                             value={job.jobDescript}
                             onChange={(e) => handleChange('jobDescript', e)}
                             className={clsx(widthEditor, 'bg-white')}
+                            placeholder="Nhập vào mô tả công việc"
                         />
                     </div>
                 </FieldCard>

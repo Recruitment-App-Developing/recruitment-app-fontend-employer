@@ -6,6 +6,7 @@ import { fetchLogin } from '../../services/authService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { USER_INFOR } from '../../constants/Constant';
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -17,9 +18,10 @@ export default function LoginForm() {
     });
 
     const handleSubmit = () => {
-        fetchLogin(loginRequest).then((data) => {
-            toast.success(data.message);
+        fetchLogin(loginRequest).then(async (data) => {
+            await toast.success(data.message);
             login(data.data.token);
+            localStorage.setItem(USER_INFOR, JSON.stringify(data.data.infor));
             navigate('/');
         });
     };

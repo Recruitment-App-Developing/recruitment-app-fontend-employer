@@ -19,8 +19,12 @@ import { data } from 'autoprefixer';
 import AddressComponent from '../../../components/AddressComponent';
 import { toast } from 'react-toastify';
 import ImageItem from '../../../components/ImageItem';
+import { USER_INFOR } from '../../../constants/Constant';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyInfor() {
+    const navigate = useNavigate();
+
     const [myInfor, setMyInfor] = useState();
     const [editInfor, setEditInfor] = useState({
         firstName: '',
@@ -58,19 +62,34 @@ export default function MyInfor() {
         }));
     };
 
-    const handleSubmit = () => {
-        fetchUpdateAccount(editInfor).then((data) => {
-            setMyInfor(data.data);
-            setEditInfor({
-                ...editInfor,
-                firstName: data.data.firstName,
-                lastName: data.data.lastName,
-                gender: data.data.gender,
-                dateOfBirth: data.data.dateOfBirth,
-                avatar: data.data.avatar.imageUrl,
-            });
-            toast.success(data.message);
+    const handleSubmit = async () => {
+        const data = await fetchUpdateAccount(editInfor);
+        if (!data.success) {
+            toast.error(data.message);
+            return;
+        }
+        setMyInfor(data.data);
+        setEditInfor({
+            ...editInfor,
+            firstName: data.data.firstName,
+            lastName: data.data.lastName,
+            gender: data.data.gender,
+            dateOfBirth: data.data.dateOfBirth,
+            avatar: data.data.avatar.imageUrl,
         });
+        toast.success(data.message);
+        const userInfor = {
+            id: data.data.id,
+            firstName: data.data.firstName,
+            lastName: data.data.lastName,
+            avatar: data.data.avatar.imageUrl,
+            username: data.data.username,
+            email: data.data.email,
+            phone: data.data.phoneNumber,
+        };
+
+        localStorage.setItem(USER_INFOR, JSON.stringify(userInfor));
+        navigate(0);
     };
 
     return (

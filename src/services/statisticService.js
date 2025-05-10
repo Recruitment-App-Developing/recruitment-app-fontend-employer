@@ -32,3 +32,10 @@ export const fetchStatisticApplyCandidateByDay = async () => {
     );
     return res.data;
 };
+
+export const fetchStatisticRecruitmentEffective = async () => {
+    const res = await axiosInstance.get(
+        `statistic/statisticRecruitmentEffective`,
+    );
+    return res.data;
+};

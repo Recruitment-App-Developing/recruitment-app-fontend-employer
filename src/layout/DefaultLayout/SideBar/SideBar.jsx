@@ -5,12 +5,16 @@ import cn from '../../../utils/cn';
 import useSideBarRoutes from '../../../hooks/useSideBarRoutes';
 import SideBarItem from './SideBarItem';
 import useSider from '../../../hooks/useSider';
+import { defaultAvatar } from '../../../constants/defaultImage';
+import { USER_INFOR } from '../../../constants/Constant';
 
 export default function DetailSideBar() {
     const text = 'text';
 
     const { isOpen } = useSider();
     const routes = useSideBarRoutes();
+
+    const userInfor = JSON.parse(localStorage.getItem(USER_INFOR));
 
     return (
         <aside
@@ -24,7 +28,7 @@ export default function DetailSideBar() {
                 <div className="mr-4 flex items-center justify-center">
                     <Avatar
                         alt="avatar"
-                        src="https://mui.com/static/images/avatar/1.jpg"
+                        src={userInfor.avatar || defaultAvatar}
                         sx={{ width: 32, height: 32 }}
                     />
                 </div>

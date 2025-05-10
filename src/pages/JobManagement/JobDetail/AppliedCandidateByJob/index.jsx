@@ -1,4 +1,5 @@
 import {
+    faBan,
     faBriefcase,
     faCalendarDay,
     faFileLines,
@@ -9,48 +10,181 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import cn from '../../../../utils/cn';
 import AdditionLine from './AdditionLine';
 import {
     fetchAppliedCandidateByJob,
     fetchSearchCandidateByJob,
+    fetchUpdateStatus,
 } from '../../../../services/applicationService';
 import { Pagination, TextField, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import {
+    applicationStatusData,
+    HIRED,
+    INTERVIEW_APPOINTMENT,
+    INTERVIEWED,
+    NEW,
+    OFFERED,
+    SKIP,
+    VIEWD,
+} from '../../../../constants/ApplicationStatusData';
+import { toast } from 'react-toastify';
 
 export default function AppliedCandidateByJob() {
+    // Khởi tạo searchParams, navigate, param
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const { jobId } = useParams();
+
+    // Helper để parse condition cho an toàn
+    const parseCondition = () => {
+        const rawCondition = searchParams.get('condition');
+        if (!rawCondition) {
+            return {
+                username: '',
+                status: 'all',
+                startTime: dayjs('2010-01-02', 'YYYY-MM-DD'),
+                endTime: dayjs(),
+            };
+        }
+
+        try {
+            const parsed = JSON.parse(rawCondition);
+            return {
+                username: parsed.username || '',
+                status: parsed.status || 'all',
+                startTime: parsed.startTime
+                    ? dayjs(parsed.startTime)
+                    : dayjs('2010-01-02', 'YYYY-MM-DD'),
+                endTime: parsed.endTime ? dayjs(parsed.endTime) : dayjs(),
+            };
+        } catch (error) {
+            console.error('Failed to parse condition:', error);
+            return {
+                username: '',
+                status: 'all',
+                startTime: dayjs('2010-01-02', 'YYYY-MM-DD'),
+                endTime: dayjs(),
+            };
+        }
+    };
+
+    // State
+    const [isClick, setIsClick] = useState(false);
     const [candidateList, setCandidateList] = useState([]);
-    const [condition, setCondition] = useState({
-        username: '',
-        status: 'all',
-        startTime: dayjs('2010-01-02', 'YYYY-MM-DD'),
-        endTime: dayjs(),
-    });
-    const [currentPage, setCurrentPage] = useState(1);
+    const [condition, setCondition] = useState(parseCondition());
+    const [currentPage, setCurrentPage] = useState(
+        Number(searchParams.get('currentPage')) || 1,
+    );
     const [totalPages, setTotalPages] = useState(1);
 
+    // Style
     const clasaBorder = '1px solid #C0C0C0';
     const classTextIcon = 'pl-2 flex items-center gap-3 text-base';
-
+    // Effect để fetch danh sách ứng viên
     useEffect(() => {
-        const temp = {
-            ...condition,
-            startTime: condition?.startTime.format('YYYY-MM-DD'),
-            endTime: condition?.endTime.format('YYYY-MM-DD'),
-        };
+        const fetchCandidates = async () => {
+            try {
+                const temp = {
+                    ...condition,
+                    startTime: condition.startTime.format('YYYY-MM-DD'),
+                    endTime: condition.endTime.format('YYYY-MM-DD'),
+                };
+                const queryString = new URLSearchParams(temp);
 
-        const queryString = new URLSearchParams(temp);
-        fetchSearchCandidateByJob(jobId, queryString, currentPage - 1).then(
-            (data) => {
+                const data = await fetchSearchCandidateByJob(
+                    jobId,
+                    queryString,
+                    currentPage - 1,
+                );
                 setCandidateList(data.data);
                 setTotalPages(data.meta.totalPages);
-            },
-        );
-    }, [condition, currentPage]);
+            } catch (error) {
+                console.error('Failed to fetch candidates:', error);
+            }
+        };
+
+        fetchCandidates();
+    }, [condition, currentPage, jobId, searchParams, isClick]);
+
+    console.log('reload');
+
+    const handleClickStatus = (status, apllicationId) => {
+        const request = { applicationId: apllicationId, status: status };
+        searchParams.set('condition', JSON.stringify(condition));
+        searchParams.set('currentPage', currentPage);
+        setSearchParams(searchParams);
+        console.log(request);
+        fetchUpdateStatus(request).then((data) => {
+            if (data.success) {
+                toast.success(data.message);
+                navigate(`?${searchParams.toString()}`);
+                setIsClick(!isClick);
+            } else toast.error(data.message);
+        });
+    };
+
+    const handleShowButton = (status, apllicationId) => {
+        let statusRes;
+        console.log(status);
+
+        switch (status) {
+            case NEW: {
+                statusRes = applicationStatusData.find(
+                    (item) => item.code === VIEWD,
+                );
+                break;
+            }
+            case VIEWD: {
+                statusRes = applicationStatusData.find(
+                    (item) => item.code === INTERVIEW_APPOINTMENT,
+                );
+                break;
+            }
+            case INTERVIEW_APPOINTMENT: {
+                statusRes = applicationStatusData.find(
+                    (item) => item.code === INTERVIEWED,
+                );
+                break;
+            }
+            case INTERVIEWED: {
+                statusRes = applicationStatusData.find(
+                    (item) => item.code === OFFERED,
+                );
+                break;
+            }
+            case OFFERED: {
+                statusRes = applicationStatusData.find(
+                    (item) => item.code === HIRED,
+                );
+                break;
+            }
+            case HIRED:
+                return '';
+            case SKIP:
+                return '';
+        }
+        console.log(statusRes);
+        if (statusRes !== null) {
+            return (
+                <Tooltip title={statusRes.title}>
+                    <button
+                        className="text-2xl"
+                        onClick={() =>
+                            handleClickStatus(statusRes.code, apllicationId)
+                        }
+                    >
+                        {statusRes.icon}
+                    </button>
+                </Tooltip>
+            );
+        }
+        return '';
+    };
 
     return (
         <div className="h-full w-full px-4 pb-4">
@@ -174,19 +308,52 @@ export default function AppliedCandidateByJob() {
                             </td>
                             <td style={{ border: clasaBorder }}>
                                 <span className="text-lg">
-                                    {item.statusApplication}
+                                    {
+                                        applicationStatusData.find(
+                                            (subItem) =>
+                                                subItem.code ===
+                                                item.statusApplication,
+                                        )?.title
+                                    }
                                 </span>
                             </td>
                             <td style={{ border: clasaBorder }}>
-                                <Tooltip title="Xem CV ứng tuyển">
-                                    <a
-                                        href={item.cvLink}
-                                        className="text-2xl text-primary"
-                                        target="_blank"
-                                    >
-                                        <FontAwesomeIcon icon={faFileLines} />
-                                    </a>
-                                </Tooltip>
+                                <div className="flex items-center justify-center gap-4">
+                                    <Tooltip title="Xem CV ứng tuyển">
+                                        <a
+                                            href={item.cvLink}
+                                            className="text-2xl text-slate-400"
+                                            target="_blank"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faFileLines}
+                                            />
+                                        </a>
+                                    </Tooltip>
+                                    {handleShowButton(
+                                        item?.statusApplication,
+                                        item.id,
+                                    )}
+                                    {item.statusApplication !== HIRED &&
+                                        item.statusApplication !== SKIP && (
+                                            <Tooltip title="Bỏ qua">
+                                                <button
+                                                    className="text-2xl"
+                                                    onClick={() =>
+                                                        handleClickStatus(
+                                                            SKIP,
+                                                            item.id,
+                                                        )
+                                                    }
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faBan}
+                                                        className="text-red"
+                                                    />
+                                                </button>
+                                            </Tooltip>
+                                        )}
+                                </div>
                             </td>
                         </tr>
                     ))}

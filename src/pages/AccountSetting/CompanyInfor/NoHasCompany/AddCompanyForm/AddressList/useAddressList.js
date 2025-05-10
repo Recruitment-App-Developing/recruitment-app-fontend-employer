@@ -42,10 +42,15 @@ export default function useAddressList() {
         });
     };
 
+    const deleteAddress = (id) => {
+        setAddressList((prev) => prev.filter((item) => item.id !== id));
+    };
+
     return {
         addressList,
         setAddressList,
         addNewSubAddress,
         updSubAddress,
+        deleteAddress,
     };
 }
