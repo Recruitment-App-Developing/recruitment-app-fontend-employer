@@ -14,6 +14,9 @@ import JobInfor from './pages/JobManagement/JobDetail/JobInfor';
 import MyInfor from './pages/AccountSetting/MyInfor';
 import Dashboard from './pages/Dashboard';
 import ChangePassword from './pages/AccountSetting/ChangePassword';
+import CvInforDetail from './pages/CvInfoManagement/CvInforDetail';
+import CvInforList from './pages/CvInfoManagement';
+import { CvInforProvider } from './pages/CvInfoManagement/CvInforDetail/CvInforContext';
 
 export const route = createBrowserRouter([
     {
@@ -70,6 +73,26 @@ export const route = createBrowserRouter([
                                 element: <JobEditPage />,
                             },
                         ],
+                    },
+                ],
+            },
+            {
+                id: 'cvs-management',
+                path: 'cvs-management',
+                children: [
+                    {
+                        id: 'cv-list',
+                        index: true,
+                        element: <CvInforList />,
+                    },
+                    {
+                        id: 'detail-cv-infor',
+                        path: 'detail/:cvInforId',
+                        element: (
+                            <CvInforProvider>
+                                <CvInforDetail />
+                            </CvInforProvider>
+                        ),
                     },
                 ],
             },

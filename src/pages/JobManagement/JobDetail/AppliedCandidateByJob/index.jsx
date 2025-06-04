@@ -33,6 +33,7 @@ import {
     VIEWD,
 } from '../../../../constants/ApplicationStatusData';
 import { toast } from 'react-toastify';
+import { openCvPdf } from '../../../../constants/Common';
 
 export default function AppliedCandidateByJob() {
     // Khởi tạo searchParams, navigate, param
@@ -320,7 +321,17 @@ export default function AppliedCandidateByJob() {
                             <td style={{ border: clasaBorder }}>
                                 <div className="flex items-center justify-center gap-4">
                                     <Tooltip title="Xem CV ứng tuyển">
-                                        <a
+                                        <button
+                                            onClick={() =>
+                                                openCvPdf(item.cvLink)
+                                            }
+                                            className="text-2xl text-slate-400"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faFileLines}
+                                            />
+                                        </button>
+                                        {/* <a
                                             href={item.cvLink}
                                             className="text-2xl text-slate-400"
                                             target="_blank"
@@ -328,7 +339,7 @@ export default function AppliedCandidateByJob() {
                                             <FontAwesomeIcon
                                                 icon={faFileLines}
                                             />
-                                        </a>
+                                        </a> */}
                                     </Tooltip>
                                     {handleShowButton(
                                         item?.statusApplication,

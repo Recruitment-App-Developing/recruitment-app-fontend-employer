@@ -53,12 +53,12 @@ export default function useSideBarRoutes() {
                 icon: faMarker,
                 active: pathname === '/create-job',
             },
-            // {
-            //     label: 'Quản lý CV',
-            //     href: '/cvs-management',
-            //     icon: faCircleUser,
-            //     active: pathname === '/cvs-management',
-            // },
+            {
+                label: 'Quản lý CV',
+                href: '/cvs-management',
+                icon: faCircleUser,
+                active: pathname === '/cvs-management',
+            },
             {
                 divider: true,
             },
