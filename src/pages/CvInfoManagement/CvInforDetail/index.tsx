@@ -156,7 +156,7 @@ export default function CvInforDetail() {
                     />
                 </div>
                 <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-semibold">Giải thưởng</h2>
+                    <h2 className="py-2 text-xl font-semibold">Giải thưởng</h2>
                     <button onClick={() => setIsOpenAward(true)}>
                         <FontAwesomeIcon icon={faInfoCircle} />
                     </button>
@@ -170,11 +170,11 @@ export default function CvInforDetail() {
                 </div>
 
                 <AwardTable data={cvInfo?.awards} />
-                <h2>Học vấn</h2>
+                <h2 className="py-2 text-xl font-semibold">Học vấn</h2>
                 <EducationTable data={cvInfo?.educations} />
-                <h2>Kinh nghiệm</h2>
+                <h2 className="py-2 text-xl font-semibold">Kinh nghiệm</h2>
                 <ExperienceTable data={cvInfo?.experiences} />
-                <div className="flex w-full justify-end gap-5">
+                <div className="mt-5 flex w-full justify-end gap-5">
                     <button className="rounded-md bg-slate-300 px-5 py-1 text-lg font-semibold text-black">
                         Huỷ
                     </button>
